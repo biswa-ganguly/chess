@@ -45,6 +45,23 @@ io.on("connection", function(uniquesocket){
             delete players.black
         }
     })
+
+    uniquesocket.on("move", (move)=>{
+        try{
+            if(chess.turn() === "w" && uniquesocket.id !==players.white) return
+            if(chess.turn() === "b" && uniquesocket.id !==players.black) return
+
+            const result = chess.move(move)
+            if(result){
+                currentPlayer = chess.turn()
+                io.emit("move", move)
+                io.emit("boardState", )
+            }
+
+        } catch(err){
+
+        }
+    })
 })
 
 server.listen(3000,function(){
