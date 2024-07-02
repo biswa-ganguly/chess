@@ -5,6 +5,9 @@ const boardElement = document.querySelector(".chessboard");
 let draggedPiece = null;
 let sourceSquare = null;
 let playerRole = null;
+let room = prompt("Enter room name:");
+
+socket.emit("joinRoom", room);
 
 const renderBoard = () => {
     const board = chess.board();
@@ -109,6 +112,14 @@ socket.on("boardState", function (fen) {
 socket.on("move", function (move) {
     chess.move(move);
     renderBoard();
+});
+
+socket.on("paired", function (isPaired) {
+    if (isPaired) {
+        alert("Players are paired!");
+    } else {
+        alert("Waiting for another player...");
+    }
 });
 
 renderBoard();
