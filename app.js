@@ -4,6 +4,7 @@ const http = require("http")
 const {Chess} = require("chess.js")
 const path = require("path")
 const { title } = require("process")
+const { log } = require("console")
 
 
 const app = express()
@@ -55,10 +56,16 @@ io.on("connection", function(uniquesocket){
             if(result){
                 currentPlayer = chess.turn()
                 io.emit("move", move)
-                io.emit("boardState", )
+                io.emit("boardState", chess.fen() )
+            }
+            else{
+                console.log("Invalid move : ", move);
+                uniquesocket.emit("InvalidMove", move)
             }
 
         } catch(err){
+            console.log(err)
+            uniquesocket.emit("Invalid Move : ", move)
 
         }
     })
